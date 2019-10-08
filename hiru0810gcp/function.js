@@ -4,65 +4,54 @@ const datastore = google.datastore('v1');
 
 exports.handler = function (request, response) {
 
-    datastore.projects.runQuery({
+    datastore.projects.beginTransaction({
         projectId: process.env.GCP_PROJECT,
         resource: {
-            gqlQuery: {
-                queryString: undefined,
-                allowLiterals: true,
-                namedBindings: {
-
-                },
-                positionalBindings: [
-
-                ]
+            transactionOptions: {
+                readWrite: {}
             }
         }
     }).then(response => {
-        console.log(response.data);           // successful response
-        /*
-        response.data = {
-            "batch": {
-                "entityResultType": "FULL",
-                "endCursor": "<base64-encoded>",
-                "entityResults": [
+        datastore.projects.commit({
+            projectId: process.env.GCP_PROJECT,
+            resource: {
+                mode: "TRANSACTIONAL",
+                mutations: [
                     {
-                        "entity": {
-                            "key": {
-                                "partitionId": {
-                                    "projectId": "<project>"
-                                },
-                                "path": [{
-                                        "kind": "<kind>",
-                                        "name": "<name>"
-                                    }
-                                ]
-                            },
-                            "properties": {
-                                "<key-1>": {
-                                    "<type-1>": "<value-1>"
-                                },
-                                ...
+                        insert: {
+                            key: {
+                                path: {
+                                    kind: "ID",
+                                    name: "identity"
+                                }
                             }
-                        },
-                        "cursor": "<cursor>",
-                        "version": "<version-timestamp>"
-                    },
-                    ...
-                ]
-            },
-            "query": {
-                "kind": <kind-spec>,
-                "filter": {
-                    "propertyFilter": <property-spec; property, op and value>
-                }
+                        }
+                    }
+                ],
+                transaction: response.data.transaction
             }
-        }
-        */
+        }).then(response => {
+            console.log(response.data);           // successful response
+            /*
+            response.data = {
+                "mutationResults": [
+                    {
+                        "version": "<version-timestamp-or-id>"
+                    }
+                ],
+                "indexUpdates": 8,
+                "commitVersion": "<commit-timestamp>"
+            }
+            */
+        })
+        .catch(err => {
+            console.log(err, err.stack); // an error occurred
+        });
     })
         .catch(err => {
             console.log(err, err.stack); // an error occurred
         });
+
 
     response.send({ "message": "Successfully executed" });
 }
