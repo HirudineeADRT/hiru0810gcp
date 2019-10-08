@@ -15,18 +15,21 @@ exports.handler = function (request, response) {
             projectId: process.env.GCP_PROJECT,
             resource: {
                 mode: "TRANSACTIONAL",
-                mutations: [
-                    {
-                        update: {
-                            key: {
-                                path: {
-                                    kind: "test",
-                                    name: "hiru"
-                                }
+                mutations: [{
+                    update: {
+                        key: {
+                            path: {
+                                kind: "test",
+                                name: "5639445604728832"
+                            }
+                        },
+                        properties: {
+                            att: {
+                                stringValue: "123"
                             }
                         }
                     }
-                ],
+                }],
                 transaction: response.data.transaction
             }
         }).then(response => {
@@ -43,9 +46,9 @@ exports.handler = function (request, response) {
             }
             */
         })
-        .catch(err => {
-            console.log(err, err.stack); // an error occurred
-        });
+            .catch(err => {
+                console.log(err, err.stack); // an error occurred
+            });
     })
         .catch(err => {
             console.log(err, err.stack); // an error occurred
