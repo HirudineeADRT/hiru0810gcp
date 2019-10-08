@@ -1,0 +1,125 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "45c89cbc-7b83-45d7-b4c5-3170a3de18f7": {
+        "id": "45c89cbc-7b83-45d7-b4c5-3170a3de18f7",
+        "parent": null,
+        "name": "hiru0810gcp",
+        "type": "DIRECTORY",
+        "isDirectory": true,
+        "children": [
+          "807849b5-0ce1-4a80-b23c-902596a0357d",
+          "cc1b6d78-8099-4c97-9f17-bee1011b0d0e"
+        ],
+        "isRemovable": false,
+        "filePath": "hiru0810gcp"
+      },
+      "807849b5-0ce1-4a80-b23c-902596a0357d": {
+        "id": "807849b5-0ce1-4a80-b23c-902596a0357d",
+        "parent": "45c89cbc-7b83-45d7-b4c5-3170a3de18f7",
+        "name": "function.js",
+        "type": "JS_LAMBDA",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "hiru0810gcp/function.js",
+        "code": "let google = require('googleapis').google;\nlet _auth = require('./Authorizer');\nconst datastore = google.datastore('v1');\n\nexports.handler = function (request, response) {\n\n    datastore.projects.runQuery({\n        projectId: process.env.GCP_PROJECT,\n        resource: {\n            gqlQuery: {\n                queryString: undefined,\n                allowLiterals: true,\n                namedBindings: {\n\n                },\n                positionalBindings: [\n\n                ]\n            }\n        }\n    }).then(response => {\n        console.log(response.data);           // successful response\n        /*\n        response.data = {\n            \"batch\": {\n                \"entityResultType\": \"FULL\",\n                \"endCursor\": \"<base64-encoded>\",\n                \"entityResults\": [\n                    {\n                        \"entity\": {\n                            \"key\": {\n                                \"partitionId\": {\n                                    \"projectId\": \"<project>\"\n                                },\n                                \"path\": [{\n                                        \"kind\": \"<kind>\",\n                                        \"name\": \"<name>\"\n                                    }\n                                ]\n                            },\n                            \"properties\": {\n                                \"<key-1>\": {\n                                    \"<type-1>\": \"<value-1>\"\n                                },\n                                ...\n                            }\n                        },\n                        \"cursor\": \"<cursor>\",\n                        \"version\": \"<version-timestamp>\"\n                    },\n                    ...\n                ]\n            },\n            \"query\": {\n                \"kind\": <kind-spec>,\n                \"filter\": {\n                    \"propertyFilter\": <property-spec; property, op and value>\n                }\n            }\n        }\n        */\n    })\n        .catch(err => {\n            console.log(err, err.stack); // an error occurred\n        });\n\n    response.send({ \"message\": \"Successfully executed\" });\n}",
+        "config": {
+          "runtime": "nodejs8",
+          "timeout": 60,
+          "memory": 128,
+          "triggerType": 0,
+          "handler": "handler"
+        },
+        "triggers": [
+          {
+            "resourceName": "http-trigger",
+            "config": {}
+          }
+        ]
+      },
+      "ba00b7a4-a4d3-4a62-8ff9-c1f59d43a107": {
+        "id": "ba00b7a4-a4d3-4a62-8ff9-c1f59d43a107",
+        "parent": null,
+        "name": "index.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": false,
+        "filePath": "index.js",
+        "code": "// This file is used to register all your cloud functions in GCP.\n// DO NOT EDIT/DELETE THIS, UNLESS YOU KNOW WHAT YOU ARE DOING.\n\nexports.hiru0810gcpfunction = require(\"./hiru0810gcp/function.js\").handler;"
+      },
+      "81e7b3e4-21cc-49c9-859e-1f2a80d30866": {
+        "id": "81e7b3e4-21cc-49c9-859e-1f2a80d30866",
+        "parent": null,
+        "name": "main.py",
+        "type": "PYTHON_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": false,
+        "filePath": "main.py",
+        "code": "# This file is used to register all your cloud functions in GCP.\n# DO NOT EDIT/DELETE THIS, UNLESS YOU KNOW WHAT YOU ARE DOING.\n\n"
+      },
+      "cc1b6d78-8099-4c97-9f17-bee1011b0d0e": {
+        "id": "cc1b6d78-8099-4c97-9f17-bee1011b0d0e",
+        "parent": "45c89cbc-7b83-45d7-b4c5-3170a3de18f7",
+        "name": "Authorizer.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "hiru0810gcp/Authorizer.js",
+        "code": "const google = require(\"googleapis\").google;\n\ngoogle.options({auth: new google.auth.Compute()});"
+      }
+    },
+    "rootNode": "45c89cbc-7b83-45d7-b4c5-3170a3de18f7",
+    "openFiles": [
+      "807849b5-0ce1-4a80-b23c-902596a0357d"
+    ],
+    "currentFileId": "807849b5-0ce1-4a80-b23c-902596a0357d",
+    "resources": {
+      "http-trigger": {
+        "name": "http-trigger",
+        "type": "http-trigger",
+        "config": {}
+      },
+      "datastore": {
+        "name": "datastore",
+        "type": "datastore",
+        "config": {}
+      }
+    },
+    "customTemplate": {
+      "dialect": null,
+      "definitions": null
+    },
+    "envVariables": [],
+    "packageJSON": {
+      "dependencies": {
+        "googleapis": {
+          "name": "googleapis",
+          "language": "javascript",
+          "version": "29.0.0",
+          "dev": false,
+          "notRemovable": false
+        }
+      }
+    }
+  },
+  "PROJECT_META": {
+    "projectName": "hiru0810gcp",
+    "projectDescription": "",
+    "projectVersion": "1.0.0",
+    "projectRegion": "us-east1",
+    "platform": "GCP",
+    "platformRegions": {},
+    "lastSave": 1570519784939
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "hiru0810gcp",
+      "url": "https://github.com/HirudineeADRT/hiru0810gcp"
+    }
+  }
+}
