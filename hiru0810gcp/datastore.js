@@ -3,6 +3,11 @@ let _auth = require('./Authorizer');
 const datastore = google.datastore('v1');
 
 exports.handler = function (request, response) {
+
+
+
+
+    
     datastore.projects.beginTransaction({
         projectId: process.env.GCP_PROJECT,
         resource: {
