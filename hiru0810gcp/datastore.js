@@ -3,11 +3,21 @@ let _auth = require('./Authorizer');
 const datastore = google.datastore('v1');
 
 exports.handler = function (request, response) {
+    datastore.projects.rollback({
+        projectId: process.env.GCP_PROJECT,
+        resource: {
+            transaction: undefined
+        }
+    }).then(response => {
+        console.log(response.data);           // successful response
+        /*
+        response.data = {}
+        */
+    })
+        .catch(err => {
+            console.log(err, err.stack); // an error occurred
+        });
 
-
-
-
-    
     datastore.projects.beginTransaction({
         projectId: process.env.GCP_PROJECT,
         resource: {
