@@ -9,8 +9,7 @@
         "isDirectory": true,
         "children": [
           "807849b5-0ce1-4a80-b23c-902596a0357d",
-          "cc1b6d78-8099-4c97-9f17-bee1011b0d0e",
-          "7e288889-8010-4153-9097-3fc60728d12c"
+          "cc1b6d78-8099-4c97-9f17-bee1011b0d0e"
         ],
         "isRemovable": false,
         "filePath": "hiru0810gcp"
@@ -48,7 +47,7 @@
         "children": [],
         "isRemovable": false,
         "filePath": "index.js",
-        "code": "// This file is used to register all your cloud functions in GCP.\n// DO NOT EDIT/DELETE THIS, UNLESS YOU KNOW WHAT YOU ARE DOING.\n\nexports.hiru0810gcpfunction = require(\"./hiru0810gcp/function.js\").handler;\nexports.hiru0810gcpdatastore = require(\"./hiru0810gcp/datastore.js\").handler;"
+        "code": "// This file is used to register all your cloud functions in GCP.\n// DO NOT EDIT/DELETE THIS, UNLESS YOU KNOW WHAT YOU ARE DOING.\n\nexports.hiru0810gcpfunction = require(\"./hiru0810gcp/function.js\").handler;"
       },
       "81e7b3e4-21cc-49c9-859e-1f2a80d30866": {
         "id": "81e7b3e4-21cc-49c9-859e-1f2a80d30866",
@@ -71,30 +70,6 @@
         "isRemovable": true,
         "filePath": "hiru0810gcp/Authorizer.js",
         "code": "const google = require(\"googleapis\").google;\n\ngoogle.options({auth: new google.auth.Compute()});"
-      },
-      "7e288889-8010-4153-9097-3fc60728d12c": {
-        "id": "7e288889-8010-4153-9097-3fc60728d12c",
-        "parent": "45c89cbc-7b83-45d7-b4c5-3170a3de18f7",
-        "name": "datastore.js",
-        "type": "JS_LAMBDA",
-        "isDirectory": false,
-        "children": [],
-        "isRemovable": true,
-        "filePath": "hiru0810gcp/datastore.js",
-        "code": "let google = require('googleapis').google;\nlet _auth = require('./Authorizer');\nconst datastore = google.datastore('v1');\n\nexports.handler = function (request, response) {\n    datastore.projects.rollback({\n        projectId: process.env.GCP_PROJECT,\n        resource: {\n            transaction: undefined\n        }\n    }).then(response => {\n        console.log(response.data);           // successful response\n        /*\n        response.data = {}\n        */\n    })\n        .catch(err => {\n            console.log(err, err.stack); // an error occurred\n        });\n\n    datastore.projects.beginTransaction({\n        projectId: process.env.GCP_PROJECT,\n        resource: {\n            transactionOptions: {\n                readWrite: {}\n            }\n        }\n    }).then(response => {\n        datastore.projects.commit({\n            projectId: process.env.GCP_PROJECT,\n            resource: {\n                mode: \"TRANSACTIONAL\",\n                mutations: [{\n                    update: {\n                        key: {\n                            path: {\n                                kind: \"test\",\n                                name: \"5639445604728832\"\n                            }\n                        },\n                        properties: {\n                            att: {\n                                stringValue: \"123\"\n                            }\n                        }\n                    }\n                }],\n                transaction: response.data.transaction\n            }\n        }).then(response => {\n            console.log(response.data);           // successful response\n            /*\n            response.data = {\n                \"mutationResults\": [\n                    {\n                        \"version\": \"<version-timestamp-or-id>\"\n                    }\n                ],\n                \"indexUpdates\": 8,\n                \"commitVersion\": \"<commit-timestamp>\"\n            }\n            */\n        })\n            .catch(err => {\n                console.log(err, err.stack); // an error occurred\n            });\n    })\n        .catch(err => {\n            console.log(err, err.stack); // an error occurred\n        });\n\n    response.send({ \"message\": \"Successfully executed\" });\n}",
-        "config": {
-          "runtime": "nodejs8",
-          "timeout": 60,
-          "memory": 128,
-          "triggerType": 0,
-          "handler": "handler"
-        },
-        "triggers": [
-          {
-            "resourceName": "http-trigger",
-            "config": {}
-          }
-        ]
       }
     },
     "rootNode": "45c89cbc-7b83-45d7-b4c5-3170a3de18f7",
@@ -149,7 +124,7 @@
     "platformRegions": {
       "AWS": "us-east-1"
     },
-    "lastSave": 1570599887751
+    "lastSave": 1570600548168
   },
   "VCS_STATE": {
     "provider": "GitHub",
